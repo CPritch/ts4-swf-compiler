@@ -1,43 +1,32 @@
 package com.simsswfcompiler;
-import com.jpexs.decompiler.flash.SWF;
-import com.jpexs.decompiler.flash.SwfOpenException;
-import com.jpexs.decompiler.flash.tags.Tag;
-import com.jpexs.decompiler.flash.tags.base.CharacterIdTag;
-import java.io.FileInputStream;
-import java.io.IOException;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
-public class App {
+@Command(name = "Sims SWF Editor", mixinStandardHelpOptions = true, version = "0.1-alpha",
+description = "Processes SWF files.")
+public class App implements Runnable {
 	private static final String APP_NAME = "Sims SWF Editor";
 	
-	public static void main(String[] args) {
-		System.out.println(String.format("%s started.", APP_NAME));
-		readSWFTags("data/export/escapemenu.swf");
-		System.out.println(String.format("%s ended.", APP_NAME));
-	}
+	@Option(names = {"-src"}, description = "The folder containing assets to import.", required = true)
+    private String src;
 	
-	private static void readSWFTags(String filePath) {
-		try ( FileInputStream fis = new FileInputStream(filePath)) {
-            SWF swf = new SWF(fis, true); 
+	@Option(names = {"-dst"}, description = "The SWF file location.", required = true)
+    private String dst;
+	
+	@Option(names = {"-out"}, description = "The filepath of the modified SWF file.", required = true)
+    private String out;
 
-            System.out.println("SWF version = " + swf.version);
-            System.out.println("FrameCount = " + swf.frameCount);
+    public static void main(String[] args) {
+        int exitCode = new CommandLine(new App()).execute(args);
+        System.exit(exitCode);
+    }
 
-            for (Tag t : swf.getTags()) {                
-                if (t instanceof CharacterIdTag) {
-                    System.out.println("Tag " + t.getTagName() + " (" + ((CharacterIdTag) t).getCharacterId() + ")");
-                } else {
-                    System.out.println("Tag " + t.getTagName());
-                }
-            }
-
-            System.out.println("OK");
-        } catch (SwfOpenException ex) {
-            System.out.println("ERROR: Invalid SWF file");
-        } catch (IOException ex) {
-            System.out.println("ERROR: Error during SWF opening");
-        } catch (InterruptedException ex) {
-            System.out.println("ERROR: Parsing interrupted");
-        }
-	}
-
+	@Override
+    public void run() {
+        System.out.println(String.format("Decompiling SWF: %s.", dst));
+        SimsSWF simsSwf = new SimsSWF(dst);
+        simsSwf.addActionScript();
+        System.out.println(String.format("SWF compilation complete", APP_NAME));
+    }
 }
