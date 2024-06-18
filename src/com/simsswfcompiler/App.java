@@ -17,7 +17,7 @@ public class App implements Runnable {
 	@Option(names = {"-dst"}, description = "The SWF file location.", required = true)
     private String dst;
 	
-	@Option(names = {"-out"}, description = "The filepath of the modified SWF file.", required = true)
+	@Option(names = {"-out"}, description = "The filepath for saving the modified SWF.", required = true)
     private String out;
 
     public static void main(String[] args) {
