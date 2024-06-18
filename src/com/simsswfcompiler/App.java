@@ -51,7 +51,7 @@ public class App implements Runnable {
             System.err.println("Error walking through scripts directory.");
             e.printStackTrace();
         }
-        
-        System.out.println("SWF compilation complete");
+        simsSwf.saveTo(out);
+        System.out.println(String.format("Modified SWF saved to %s", out));
     }
 }
