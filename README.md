@@ -8,7 +8,7 @@ Since I've built this to do exactly what I need I'd advise against using this fo
 ## Features
 
 - Decompile/Recompile SWF files using [FFDEC](https://github.com/jindrapetrik/jpexs-decompiler)
-- Replace ActionScript 3 (AS3) code based on AS3 package + name
+- Replace ActionScript 3 (AS3) code based on AS3 package + classname
 - Clone and modify PlaceObject tags based on a custom JSON schema
 
 ## Prerequisites
