@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "required": ["instanceName", "copy"],
+  "properties": {
+    "copy": {
+      "type": "object",
+      "required": ["instanceName"],
+      "properties": {
+        "instanceName": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+	"instanceName": {
+      "type": "string"
+    },
+	"className": {
+	  "type": "string"
+	}
+  }
+}

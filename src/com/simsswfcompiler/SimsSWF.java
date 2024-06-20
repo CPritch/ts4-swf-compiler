@@ -1,15 +1,17 @@
 package com.simsswfcompiler;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.jpexs.decompiler.flash.ReadOnlyTagList;
 import com.jpexs.decompiler.flash.SWF;
 import com.jpexs.decompiler.flash.SwfOpenException;
 import com.jpexs.decompiler.flash.abc.ScriptPack;
@@ -21,6 +23,9 @@ import com.jpexs.decompiler.flash.importers.As3ScriptReplaceExceptionItem;
 import com.jpexs.decompiler.flash.importers.As3ScriptReplacerFactory;
 import com.jpexs.decompiler.flash.importers.As3ScriptReplacerInterface;
 import com.jpexs.decompiler.flash.importers.FFDecAs3ScriptReplacer;
+import com.jpexs.decompiler.flash.tags.Tag;
+import com.jpexs.decompiler.flash.tags.base.PlaceObjectTypeTag;
+import com.jpexs.decompiler.flash.timeline.Timelined;
 
 public class SimsSWF {
     
@@ -33,10 +38,12 @@ public class SimsSWF {
             this.packs = swf.getAS3Packs();            
         } catch(SwfOpenException ex) {
         	ex.printStackTrace();
-        	// Handle exceptions appropriately
+            System.err.println("Error opening swf: " + ex.toString());
+            System.exit(1);
         } catch (IOException | InterruptedException ex) {
             ex.printStackTrace();
-            // Handle exceptions appropriately
+            System.err.println("Error reading swf file: " + ex.toString());
+            System.exit(1);
         }
     }
     
@@ -52,18 +59,64 @@ public class SimsSWF {
                 swf.saveTo(fos);
             }
         } catch (IOException e) {
-            System.err.println("I/O error during writing: " + e.toString());
-            System.exit(2);
+            System.err.println("Error writing: " + e.toString());
+            System.exit(1);
         }
+    }
+    
+    public void copyTag(String srcInstanceName, String srcTagType, String dstInstanceName, String dstClassName) {
+		List<Tag> foundTags = findTag(swf, srcInstanceName);
+		if (foundTags.size() == 0) {
+			System.err.println("Error: could not find tag with name: " + srcInstanceName);
+			System.exit(1);
+		}
+		if (foundTags.size() > 1) {
+			System.err.println(
+				String.format("Error: found %s tags for %s, please be more specific", foundTags.size(), srcInstanceName)
+			);
+			System.exit(1);
+		}
+		PlaceObjectTypeTag foundTag = (PlaceObjectTypeTag)foundTags.getFirst();
+		System.out.println("Found matching tag: " + foundTag.getName());
+		try {
+			PlaceObjectTypeTag copiedTag = (PlaceObjectTypeTag)foundTag.cloneTag();
+			copiedTag.setInstanceName(dstInstanceName);
+			if (dstClassName != null && dstClassName.length() > 0) {
+				copiedTag.setClassName(dstClassName);
+			}
+			copiedTag.setModified(true);
+			Timelined timeline = foundTag.getTimelined();
+			timeline.addTag(timeline.indexOfTag(foundTag) + 1, copiedTag);
+			System.out.println("Created new tag: " + copiedTag.getInstanceName());
+		} catch(IOException | InterruptedException ex) {
+			System.err.println("Error copying tag: " + ex.toString());
+		}
+    }
+    
+    public List<Tag> findTag(Timelined parent, String name) {
+    	ReadOnlyTagList tags = parent.getTags();
+    	List<Tag> foundTags = new ArrayList<Tag>();
+    	for (Tag t : tags) {
+    		if (t instanceof Timelined) {
+    			foundTags.addAll(findTag((Timelined) t, name));
+    		} else if(t instanceof PlaceObjectTypeTag) {
+    			PlaceObjectTypeTag pt = (PlaceObjectTypeTag) t;
+    			String tagInstanceName = pt.getInstanceName();
+    			if (tagInstanceName != null && tagInstanceName.contains(name)) {
+    				foundTags.add(pt);
+    			}
+    		}
+    	}
+    	return foundTags;
     }
     
     public void addAS3(String fileName, String fileContent) {
         if (swf == null) {
-        	System.err.println("SWF not open");
+        	System.err.println("Error: SWF not open");
         	System.exit(1);
         }
         if (packs == null) {
-        	System.err.println("AS3 not decompiled");
+        	System.err.println("Error: AS3 not decompiled");
         	System.exit(1);
         }
         String className = getClassNameFromFileContent(fileContent);
@@ -77,7 +130,7 @@ public class SimsSWF {
         }
         if (found == false) {
         	System.err.println(
-    			String.format("Could not find a matching class for %s. Adding new AS3 is unsupported for now.", className)
+    			String.format("Error: Could not find a matching class for %s. Adding new AS3 is unsupported for now.", className)
         	);
         	System.exit(1);
         }
@@ -99,7 +152,7 @@ public class SimsSWF {
     private static void replaceAS3(String fileContent, ScriptPack pack) {
     	As3ScriptReplacerInterface scriptReplacer = As3ScriptReplacerFactory.createByConfig(false);
     	if (!scriptReplacer.isAvailable()) {
-            System.err.println("Current script replacer is not available.");
+            System.err.println("Error: Current script replacer is not available.");
             if (scriptReplacer instanceof FFDecAs3ScriptReplacer) {
                 System.err.println("Current replacer: FFDec");
                 final String adobePage = "http://www.adobe.com/support/flashplayer/downloads.html";
