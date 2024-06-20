@@ -18,6 +18,11 @@ Since I've built this to do exactly what I need I'd advise against using this fo
 
 ## Installation
 
+1. Download the Jar from [Releases](https://github.com/CPritch/ts4-swf-compiler/releases)
+2. [Use it](#usage)
+
+## Building
+
 1. Clone the repository:
 
 ```
