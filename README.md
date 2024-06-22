@@ -81,7 +81,3 @@ Contributions are welcome! Please follow the [contributing guidelines]()(Coming 
 
 This project is licensed under the [MIT License](./LICENSE).
 ```
-
-This README provides an overview of the project, its features, installation instructions, usage examples, and information about configuration and contributing. You can customize and expand on this structure based on your project's specific requirements.
-
-Additionally, you should consider creating separate documentation files for the tag configuration schema and contributing guidelines, as referenced in the README.
