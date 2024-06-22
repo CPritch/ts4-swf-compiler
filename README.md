@@ -9,7 +9,7 @@ Since I've built this to do exactly what I need I'd advise against using this fo
 
 - Decompile/Recompile SWF files using [FFDEC](https://github.com/jindrapetrik/jpexs-decompiler)
 - Replace ActionScript 3 (AS3) code based on AS3 package + classname
-- Clone and modify PlaceObject tags based on a custom JSON schema
+- Clone and modify PlaceObject tags based on a [custom JSON schema](./src/main/java/resources/TagModel.json)
 
 ## Prerequisites
 
@@ -62,16 +62,16 @@ src/
 │   └── ...
 └── tags/
     ├── tag1.json
-    ├── tag2.yml
+    ├── tag2.json
     └── ...
 ```
 
 - `scripts/`: Contains ActionScript 3 (AS3) files to be replaced or added to the SWF. Correct script to replace is determined automatically from AS3 code.
-- `tags/`: Contains tag configuration files in JSON or YAML format.
+- `tags/`: Contains tag configuration files in JSON.
 
 ## Tag Configuration
 
-The tag configuration files must follow a specific JSON schema. See the [Tag Configuration Schema](./src/main/resources/TagModel.json) for more details.
+The tag configuration files must follow a specific JSON schema. See the [Tag Configuration Schema](./src/main/java/resources/TagModel.json) for more details.
 
 ## Contributing
 
