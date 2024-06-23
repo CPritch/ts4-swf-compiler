@@ -4,11 +4,14 @@ import com.jpexs.decompiler.flash.ReadOnlyTagList;
 import com.jpexs.decompiler.flash.SWF;
 import com.jpexs.decompiler.flash.SwfOpenException;
 import com.jpexs.decompiler.flash.abc.ScriptPack;
+import com.jpexs.decompiler.flash.configuration.Configuration;
+import com.jpexs.decompiler.flash.flexsdk.MxmlcAs3ScriptReplacer;
 import com.jpexs.decompiler.flash.gui.Main;
 import com.jpexs.decompiler.flash.importers.As3ScriptReplaceException;
 import com.jpexs.decompiler.flash.importers.As3ScriptReplaceExceptionItem;
 import com.jpexs.decompiler.flash.importers.As3ScriptReplacerFactory;
 import com.jpexs.decompiler.flash.importers.As3ScriptReplacerInterface;
+import com.jpexs.decompiler.flash.importers.FFDecAs3ScriptReplacer;
 import com.jpexs.decompiler.flash.tags.Tag;
 import com.jpexs.decompiler.flash.tags.base.PlaceObjectTypeTag;
 import com.jpexs.decompiler.flash.timeline.Timelined;
@@ -130,7 +133,22 @@ public class SimsSWF {
     private void replaceAS3(String fileContent, ScriptPack pack) {
         As3ScriptReplacerInterface scriptReplacer = As3ScriptReplacerFactory.createByConfig(false);
         if (!scriptReplacer.isAvailable()) {
-            throw new IllegalStateException("Current script replacer is not available.");
+            if (scriptReplacer instanceof FFDecAs3ScriptReplacer) {
+                System.err.println("Current replacer: FFDec");
+                final String flashPage = "https://github.com/nexussays/playerglobal";
+                System.err.println("For ActionScript 3 direct editation, a library called \"PlayerGlobal.swc\" needs to be downloaded from Adobe homepage:");
+                System.err.println(flashPage);
+                System.err.println("Download the library called PlayerGlobal(.swc), and place it to directory");
+                System.err.println(Configuration.getFlashLibPath().getAbsolutePath());
+            } else if (scriptReplacer instanceof MxmlcAs3ScriptReplacer) {
+                System.err.println("Current replacer: Flex SDK");
+                final String flexPage = "http://www.adobe.com/devnet/flex/flex-sdk-download.html";
+                System.err.println("For ActionScript 3 direct editation, Flex SDK needs to be download");
+                System.err.println(flexPage);
+                System.err.println("Download FLEX Sdk, unzip it to some directory and set its directory path in the configuration");
+                throw new IllegalStateException("Current script replacer is not available.");
+            }
+            System.exit(1);
         }
 
         try {
