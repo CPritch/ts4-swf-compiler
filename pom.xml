@@ -7,7 +7,7 @@
 	<version>0.0.1-alpha</version>
 	<name>Sims SWF Compiler</name>
 	<build>
-		<finalName>SimsSWF-${v${project.version}}.jar</finalName>
+		<finalName>sims-swf-compiler-0.0.1-alpha</finalName>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<resources>
 			<resource>
@@ -60,20 +60,6 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>com.jpexs</groupId>
-			<artifactId>ffdec</artifactId>
-			<version>20.1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/lib/ffdec.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.jpexs</groupId>
-			<artifactId>ffdec_lib</artifactId>
-			<version>20.1.0</version>
-			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/resources/lib/ffdec_lib.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>info.picocli</groupId>
 			<artifactId>picocli</artifactId>
 			<version>4.7.6</version>
@@ -83,5 +69,20 @@
 			<artifactId>json-schema-validator</artifactId>
 			<version>5.4.0</version>
 		</dependency>
+		<dependency>
+	        <groupId>com.jpexs</groupId>
+	        <artifactId>ffdec</artifactId>
+	        <version>20.1.0</version>
+	    </dependency>
+    	<dependency>
+	        <groupId>com.jpexs</groupId>
+	        <artifactId>ffdec_lib</artifactId>
+	        <version>20.1.0</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>com.jpexs</groupId>
+	        <artifactId>flashdebugger</artifactId>
+	        <version>20.1.0</version>
+	    </dependency>
 	</dependencies>
 </project>

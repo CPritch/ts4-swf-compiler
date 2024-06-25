@@ -12,13 +12,13 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/charl/Sims4Mods/mods-wip/ts4-swf-compiler/src/main/resources/lib/ffdec_lib.jar"/>
+	<classpathentry kind="lib" path="C:/Users/charl/Sims4Mods/mods-wip/ts4-swf-compiler/lib/ffdec_lib.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/charl/Sims4Mods/mods-wip/ts4-swf-compiler/src/main/resources/lib/ffdec.jar"/>
+	<classpathentry kind="lib" path="C:/Users/charl/Sims4Mods/mods-wip/ts4-swf-compiler/lib/ffdec.jar"/>
 	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
@@ -39,5 +39,6 @@
 			<attribute name="optional" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/charl/Sims4Mods/mods-wip/ts4-swf-compiler/lib/flashdebugger.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

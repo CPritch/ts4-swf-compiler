@@ -15,7 +15,7 @@
         </includes>
       </resource>
     </resources>
-    <finalName>SimsSWF-${v${project.version}}.jar</finalName>
+    <finalName>sims-swf-compiler-0.0.1-alpha</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -55,20 +55,4 @@
       </plugin>
     </plugins>
   </build>
-  <dependencies>
-    <dependency>
-      <groupId>com.jpexs</groupId>
-      <artifactId>ffdec</artifactId>
-      <version>20.1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/lib/ffdec.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>com.jpexs</groupId>
-      <artifactId>ffdec_lib</artifactId>
-      <version>20.1.0</version>
-      <scope>system</scope>
-      <systemPath>${project.basedir}/src/main/resources/lib/ffdec_lib.jar</systemPath>
-    </dependency>
-  </dependencies>
 </project>
